@@ -4,11 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Интернет-аптека в Алмате</title>
-    <link rel="stylesheet" th:href="@{/style/normolize.css}">
-    <link rel="stylesheet" th:href="@{/style/main.css}">
-    <link rel="stylesheet" th:href="@{/style/reset.css}">
+<!--    <link rel="stylesheet" th:href="@{/style/normolize.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/style/main.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/style/reset.css}">-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <link rel="stylesheet" th:href="@{/style/bootstrap.css}">
+
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+    <link rel="stylesheet" th:href="@{/style/reset.css}">
+    <script>
+        function openModal(id) {
+            console.log('aa')
+            getSubCategories(id)
+            let modalElement = document.getElementById('temporaryModal');
+            let modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.show();
+
+            let backdropElement = document.querySelector('.modal-backdrop');
+            if (backdropElement) {
+                backdropElement.remove();
+            }
+
+            modalElement.style.width = '65%';
+            modalElement.style.height = '75%';
+            modalElement.style.marginTop = '10%';
+            modalElement.style.marginLeft = '25%';
+
+            // modalElement.style.backgroundColor = '#cb0000';
+            // modalElement.style.opacity = '0.5'
+            modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+
+        }
+
+        function closeModal() {
+
+            let modalInstance = new bootstrap.Modal(document.getElementById('temporaryModal'));
+            modalInstance._hideModal();
+        }
+
+        function getSubCategories(id) {
+            const http = new XMLHttpRequest();
+            http.open("GET", "/api/subcategory/" + id, true);
+            http.setRequestHeader("Content-type", "application/json");
+
+            http.onreadystatechange = function () {
+                if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                    let subCategories = JSON.parse(http.response);
+
+                    let modalBody = document.querySelector('.modal-body');
+                    modalBody.innerHTML = '';
+
+                    let body = '';
+
+                    for (let i = 0; i < subCategories.length; i++) {
+                        let name = subCategories[i].name;
+                        // Correctly concatenate the subcategory id with the string using +
+                        body += "<a onclick=\"openCategories('" +
+                            subCategories[i].id + "')\" class='subcategory-name'>" + name + "</a>";
+                    }
+
+
+
+
+
+                    modalBody.innerHTML = body;
+                }
+            };
+
+            http.send();
+        }
+
+        function openCategories(id) {
+            window.open("/products/get/" + id)
+
+        }
+
+
+    </script>
     <style>
         .menu {
             position: relative;
@@ -194,10 +269,18 @@
                             <img th:src="@{/image/icon/logo.svg}" alt="">
                         </a>
                     </li>
-                    <li class="nav__list__item">Оплата</li>
-                    <li class="nav__list__item">Доставка</li>
-                    <li class="nav__list__item">Как купить</li>
-                    <li class="nav__list__item">Контакты</li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/payment}">Оплата</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/delivery}">Доставка</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/how-to-buy}">Как купить</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/contacts}">Контакты</a>
+                    </li>
                 </ul>
             </nav>
             <p class="contacts">8 777 777 77 77</p>
@@ -212,19 +295,36 @@
             <li class="main__list__item">
                 <div class="dropdown">
                     <button class="catalog">Каталог товаров</button>
-                    <div class="dropdown-content">
-                        <a th:each="category : ${categories}" class="dropdown-cover" href="#" th:text="${category.getName()}"/>
+                    <div class="dropdown-content" style="background-color: #fff">
+                        <!-- Ensure openModal is defined before being referenced -->
+                        <a th:each="category : ${categories}" class="dropdown-cover" href="#" id="content"
+                           th:id="'category_' + ${category.id}" th:text="${category.getName()}"
+                           th:attr="data-category-id=${category.id}"
+                           onmouseenter="openModal(this.getAttribute('data-category-id'))" />
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Справочник лекарств</li>
+
+            <div class="modal" id="temporaryModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" onmouseleave="closeModal()">
+                <div class="modal-dialog">
+                    <div class="modal-content"> <!-- Change modal-lg to adjust size -->
+                        <div class="modal-header">
+                            <h5 class="modal-title"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="modalBody">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <li class="main__list__item"> <a href="/handbook">Справочник лекарств </a></li>
             <li class="main__list__item">
                 <input placeholder="Название товара" type="text" class="search__input">
             </li>
             <li class="main__list__item">
                 <div class="oneLine">
                     <img th:src="@{/image/icon/authIcon.svg}" alt="">
-                    <p th:if="${user}">Личный кабинет</p>
+                    <p th:if="${user}"><a href="/personal">Личный кабинет </a></p>
                     <button th:unless="${user}" onclick=
                             "document.getElementById('id01').style.display='block'" style="width:auto;">
                         Login
@@ -256,8 +356,9 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Избранное</li>
-            <li class="main__list__item">Корзина</li>
+            <li class="main__list__item"> <a href="/personal/favourites">Избранное</a></li>
+            <li class="main__list__item"><a href="/basket">Корзина </a></li>
+
         </ul>
     </div>
 

@@ -1,3 +1,5 @@
+import {Alert} from "./bootstrap.esm";
+
 (function () {
     //Login/Signup modal window - by CodyHouse.co
     function ModalSignin(element) {
@@ -221,3 +223,79 @@ function submit() {
 
 }
 
+
+function openModal(id) {
+    console.log('aa')
+    getSubCategories(id)
+    let modalElement = document.getElementById('temporaryModal');
+    let modalInstance = new bootstrap.Modal(modalElement);
+    modalInstance.show();
+
+    let backdropElement = document.querySelector('.modal-backdrop');
+    if (backdropElement) {
+        backdropElement.remove();
+    }
+
+    modalElement.style.width = '65%';
+    modalElement.style.height = '75%';
+    modalElement.style.marginTop = '10%';
+    modalElement.style.marginLeft = '25%';
+
+    // modalElement.style.backgroundColor = '#cb0000';
+    // modalElement.style.opacity = '0.5'
+    modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+
+}
+
+function closeModal() {
+
+    let modalInstance = new bootstrap.Modal(document.getElementById('temporaryModal'));
+    modalInstance._hideModal();
+}
+
+function getSubCategories(id) {
+    const http = new XMLHttpRequest();
+    http.open("GET", "/api/subcategory/" + id, true);
+    http.setRequestHeader("Content-type", "application/json");
+
+    http.onreadystatechange = function () {
+        if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+            let subCategories = JSON.parse(http.response);
+
+            let modalBody = document.querySelector('.modal-body');
+            modalBody.innerHTML = '';
+
+            let body = '';
+
+            for (let i = 0; i < subCategories.length; i++) {
+                let name = subCategories[i].name;
+                // Correctly concatenate the subcategory id with the string using +
+                body += "<a onclick=\"openCategories('" +
+                    subCategories[i].id + "')\" class='subcategory-name'>" + name + "</a>";
+            }
+
+
+
+
+
+            modalBody.innerHTML = body;
+        }
+    };
+
+
+
+
+
+    http.send();
+}
+
+function openCategories(id) {
+    window.open("/products/get/" + id)
+
+}
+
+function addToFavorite(productId) {
+
+
+
+}

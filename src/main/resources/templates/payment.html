@@ -207,10 +207,18 @@
                             <img th:src="@{/image/icon/logo.svg}" alt="">
                         </a>
                     </li>
-                    <li class="nav__list__item">Оплата</li>
-                    <li class="nav__list__item">Доставка</li>
-                    <li class="nav__list__item">Как купить</li>
-                    <li class="nav__list__item">Контакты</li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/payment}">Оплата</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/delivery}">Доставка</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/how-to-buy}">Как купить</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/contacts}">Контакты</a>
+                    </li>
                 </ul>
             </nav>
 
@@ -306,7 +314,7 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Избранное</li>
+            <li class="main__list__item"><a>Избранное</a></li>
             <li class="main__list__item">
                 <div class="oneLine">
                     <img th:src="@{/image/icon/Vector.svg}" alt="aaa">

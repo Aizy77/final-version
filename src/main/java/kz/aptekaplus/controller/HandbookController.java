@@ -2,6 +2,7 @@ package kz.aptekaplus.controller;
 
 
 import kz.aptekaplus.dto.ProductViewDTO;
+import kz.aptekaplus.service.CategoryService;
 import kz.aptekaplus.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,11 @@ import java.util.List;
 public class HandbookController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @GetMapping
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("categories", categoryService.getCategories());
         return "spravochnik";
     }
 

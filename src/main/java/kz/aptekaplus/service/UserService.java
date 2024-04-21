@@ -123,4 +123,9 @@ public class UserService {
             }
         }
     }
+
+    public void saveUser(User user) {
+        System.out.println(user.getBasket().size());
+        userRepository.save(user);
+    }
 }

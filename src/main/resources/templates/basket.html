@@ -10,8 +10,97 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <link rel="stylesheet" th:href="@{/style/main.css}">
+    <link rel="stylesheet" th:href="@{/style/reset.css}">
+    <link rel="stylesheet" th:href="@{/style/bootstrap.css}">
     <script>
-        var modal = document.getElementById('id01');
+        function openModal(id) {
+            console.log('aa')
+            getSubCategories(id)
+            let modalElement = document.getElementById('temporaryModal');
+            let modalInstance = new bootstrap.Modal(modalElement);
+            modalInstance.show();
+
+            let backdropElement = document.querySelector('.modal-backdrop');
+            if (backdropElement) {
+                backdropElement.remove();
+            }
+
+            modalElement.style.width = '65%';
+            modalElement.style.height = '75%';
+            modalElement.style.marginTop = '10%';
+            modalElement.style.marginLeft = '25%';
+
+            // modalElement.style.backgroundColor = '#cb0000';
+            // modalElement.style.opacity = '0.5'
+            modalElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+
+        }
+
+        function closeModal() {
+
+            let modalInstance = new bootstrap.Modal(document.getElementById('temporaryModal'));
+            modalInstance._hideModal();
+        }
+
+        function getSubCategories(id) {
+            const http = new XMLHttpRequest();
+            http.open("GET", "/api/subcategory/" + id, true);
+            http.setRequestHeader("Content-type", "application/json");
+
+            http.onreadystatechange = function () {
+                if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                    let subCategories = JSON.parse(http.response);
+
+                    let modalBody = document.querySelector('.modal-body');
+                    modalBody.innerHTML = '';
+
+                    let body = '';
+
+                    for (let i = 0; i < subCategories.length; i++) {
+                        let name = subCategories[i].name;
+                        // Correctly concatenate the subcategory id with the string using +
+                        body += "<a onclick=\"openCategories('" +
+                            subCategories[i].id + "')\" class='subcategory-name'>" + name + "</a>";
+                    }
+
+
+
+
+
+                    modalBody.innerHTML = body;
+                }
+            };
+
+            http.send();
+        }
+
+        function openCategories(id) {
+            window.open("/products/get/" + id)
+
+        }
+
+        function deleteFromBasket(productId) {
+        let userId = document.getElementById('userId')
+
+
+        const http = new XMLHttpRequest();
+        http.open("DELETE", "/basket/" + userId.value + "/" + productId, true);
+
+        http.onreadystatechange = function () {
+            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                console.log("successfully deleted")
+                alert("successfully deleted")
+                location.reload();
+
+            }
+        };
+        http.send();
+
+    }
+
+    var modal = document.getElementById('id01');
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -194,10 +283,18 @@
                             <img th:src="@{/image/icon/logo.svg}" alt="">
                         </a>
                     </li>
-                    <li class="nav__list__item">Оплата</li>
-                    <li class="nav__list__item">Доставка</li>
-                    <li class="nav__list__item">Как купить</li>
-                    <li class="nav__list__item">Контакты</li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/payment}">Оплата</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/delivery}">Доставка</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/how-to-buy}">Как купить</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/contacts}">Контакты</a>
+                    </li>
                 </ul>
             </nav>
 
@@ -234,12 +331,27 @@
             <li class="main__list__item">
                 <div class="dropdown">
                     <button class="catalog">Каталог товаров</button>
-                    <div class="dropdown-content">
-                        <a th:each="category : ${categories}" class="dropdown-cover" href="#"
-                           th:text="${category.getName()}"/>
+                    <div class="dropdown-content" style="background-color: #fff">
+                        <a th:each="category : ${categories}" class="dropdown-cover" href="#" id="content"
+                           th:id="'category_' + ${category.id}" th:text="${category.getName()}"
+                           th:attr="data-category-id=${category.id}"
+                           onmouseenter="openModal(this.getAttribute('data-category-id'))" />
                     </div>
                 </div>
             </li>
+
+            <div class="modal" id="temporaryModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" onmouseleave="closeModal()">
+                <div class="modal-dialog">
+                    <div class="modal-content"> <!-- Change modal-lg to adjust size -->
+                        <div class="modal-header">
+                            <h5 class="modal-title"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="modalBody">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <li class="main__list__item">
                 <a href="/handbook">Справочник лекарств</a>
             </li>
@@ -293,7 +405,7 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Избранное</li>
+            <li class="main__list__item"><a href="personal/favourites">Избранное</a></li>
             <li class="main__list__item">
                 <div class="oneLine">
                     <img th:src="@{/image/icon/Vector.svg}" alt="aaa">
@@ -310,28 +422,31 @@
 </section>
 
 <section class="basket">
-    <div class="container">
-        <h1>Корзина</h1>
+    <input type="hidden" th:value="${user.getId()}" id="userId">
+    <div class="container" style="margin-left: 400px">
+        <h1 th:if="${user.getBasket().size() != 0}">Корзина</h1>
+        <h1 th:if="${user.getBasket().size() == 0}">Пустая Корзина</h1>
         <ul class="basket__list">
-            <li class="basket__item">
-                <ul class="basket__item__row" th:each="product : ${user.getBasket()}">
+            <li class="basket__item" th:each="product : ${user.getBasket()}">
+                <ul class="basket__item__row">
                     <li class="basket__item__row__item">
-<!--                        <img th:src="@{product.getImagePath()}" alt="aaa">-->
-                        <p th:text="${product.getImagePath()}"></p>
+                        <img class="basket__item__image" th:src="${product.getImagePath()}" alt="Product Image">
                     </li>
                     <li class="basket__item__row__item">
-                        <span th:text="${product.getName()}"></span>
-                    </li>
-
-                    <li class="basket__item__row__item">
-                        ₸<span th:text="${product.getPrice()}"></span>
+                        <span class="basket__item__name" th:text="${product.getName()}"></span>
                     </li>
                     <li class="basket__item__row__item">
-                        <span>delete</span>
+                        <span class="basket__item__price">₸<span th:text="${product.getPrice()}"></span></span>
+                    </li>
+                    <li class="basket__item__row__item basket__item__row__action">
+                        <button class="btn btn-danger"
+                                th:attr="data-category-id=${product.getId}"
+                                onclick="deleteFromBasket(this.getAttribute('data-category-id'))">Delete</button>
                     </li>
                 </ul>
             </li>
         </ul>
+
     </div>
 </section>
 

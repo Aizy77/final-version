@@ -194,10 +194,18 @@
                             <img th:src="@{/image/icon/logo.svg}" alt="">
                         </a>
                     </li>
-                    <li class="nav__list__item">Оплата</li>
-                    <li class="nav__list__item">Доставка</li>
-                    <li class="nav__list__item">Как купить</li>
-                    <li class="nav__list__item">Контакты</li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/payment}">Оплата</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/delivery}">Доставка</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/how-to-buy}">Как купить</a>
+                    </li>
+                    <li class="nav__list__item">
+                        <a th:href="@{/info/contacts}">Контакты</a>
+                    </li>
                 </ul>
             </nav>
             <p class="contacts">8 777 777 77 77</p>
@@ -218,7 +226,7 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Справочник лекарств</li>
+            <li class="main__list__item"> <a href="/handbook">Справочник лекарств </a></li>
             <li class="main__list__item">
                 <input placeholder="Название товара" type="text" class="search__input">
             </li>
@@ -257,8 +265,8 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Избранное</li>
-            <li class="main__list__item">Корзина</li>
+            <li class="main__list__item"> <a href="/personal/favourites">Избранное</a></li>
+            <li class="main__list__item"><a href="/basket">Корзина </a></li>
         </ul>
     </div>
 

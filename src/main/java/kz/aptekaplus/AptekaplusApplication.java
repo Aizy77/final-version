@@ -42,7 +42,7 @@ public class AptekaplusApplication implements CommandLineRunner {
         var category = Category.builder()
                 .name("Лекарственные средства")
                 .build();
-        categoryRepository.save(category);
+//        categoryRepository.save(category);
 //
 
 
@@ -51,7 +51,7 @@ public class AptekaplusApplication implements CommandLineRunner {
                 .category(category)
                 .name("Витамины и минералы")
                 .build();
-        subCategoryRepository.save(subCategory);
+//        subCategoryRepository.save(subCategory);
 //
 
 
@@ -60,12 +60,13 @@ public class AptekaplusApplication implements CommandLineRunner {
                 .subCategory(subCategory)
                 .name("Витамин А")
                 .build();
-        labelRepository.save(label);
+//        labelRepository.save(label);
 //
 
         var product = Product.builder()
                 .label(label)
                 .name("РЕТИНОЛ ПАЛЬМИТАТ (ВИТ А)")
+                .subCategory(subCategory)
                 .countryProducer("countryProducer")
                 .expirationDate(2000.0)
                 .internationalName("internationalName")
@@ -75,7 +76,7 @@ public class AptekaplusApplication implements CommandLineRunner {
                 .structure("structure")
                 .price(100.0)
                 .build();
-        productRepository.save(product);
+//        productRepository.save(product);
 
     }
 

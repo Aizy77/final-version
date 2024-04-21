@@ -31,6 +31,9 @@ public class Product {
     @JoinColumn(name="label_id", nullable=false)
     private Label label;
 
+    @ManyToOne
+    @JoinColumn(name="sub_category_id", nullable=false)
+    private SubCategory subCategory;
 
     @Column(name = "image_path")
     private String imagePath;

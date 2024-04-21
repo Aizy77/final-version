@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,9 +17,11 @@ import java.util.List;
 public class SubCategoryService {
 
     private final SubCategoryRepository subCategoryRepository;
-
-
     public List<SubCategory> findAllSubCategoriesByCategory(Category category) {
         return subCategoryRepository.findAllByCategory(category);
+    }
+
+    public List<SubCategory> findAllSubCategoryByCategoryId(UUID id) {
+        return subCategoryRepository.findByCategoryId(id);
     }
 }

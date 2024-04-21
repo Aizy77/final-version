@@ -3,8 +3,10 @@ package kz.aptekaplus.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aptekaplus.service.BasketService;
+import kz.aptekaplus.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class BasketController {
 
     private final BasketService basketService;
+    private final CategoryService categoryService;
 
     @PostMapping
     @ResponseBody
@@ -24,7 +27,14 @@ public class BasketController {
     }
 
     @GetMapping
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("categories", categoryService.getCategories());
         return "basket";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/{userId}/{productId}")
+    public void deleteFromBasket(@PathVariable(name = "productId") UUID productId, @PathVariable(name = "userId") UUID userId) {
+        basketService.deleteFromBasket(productId, userId);
     }
 }
