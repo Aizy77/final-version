@@ -84,6 +84,20 @@
         function openCategories(id) {
             window.open("/products/get/" + id)
         }
+
+        function addToFavorite(productId) {
+            const http = new XMLHttpRequest();
+            http.open("POST", "/personal/favourites/" + productId, true);
+            http.setRequestHeader("Content-type", "application/json");
+
+            http.onreadystatechange = function () {
+                if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                    console.log("addded")
+                }
+            };
+
+            http.send();
+        }
     </script>
     <style>
         /** {*/
@@ -324,7 +338,7 @@
                     </div>
                 </div>
             </li>
-            <li class="main__list__item">Избранное</li>
+            <li class="main__list__item"> <a href="/personal/favourites">Избранное</a></li>
             <li class="main__list__item"><a href="/basket">Корзина </a></li>
         </ul>
     </div>

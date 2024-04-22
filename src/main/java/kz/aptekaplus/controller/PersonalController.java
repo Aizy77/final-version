@@ -75,8 +75,8 @@ public class PersonalController {
         return "favourites";
     }
 
-    @PostMapping("/favourites")
-    public String favourites(HttpServletRequest request, @RequestParam("productId") UUID productId, Model model) {
+    @PostMapping("/favourites/{productId}")
+    public String favourites(HttpServletRequest request, @PathVariable(name = "productId") UUID productId, Model model) {
         userService.addFavourites(request, productId);
         List<Product> products = userService.getFavourites(request);
         if (products != null) {

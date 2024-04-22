@@ -116,6 +116,7 @@ public class UserService {
                 UUID userId = UUID.fromString(jwtService.extractID(refreshToken));
                 User user = findById(userId);
                 if (user != null) {
+                    user.setFavouriteProducts(new ArrayList<>());
                     user.getFavouriteProducts().add(String.valueOf(productId));
                     userRepository.saveAndFlush(user);
                 }
@@ -124,8 +125,4 @@ public class UserService {
         }
     }
 
-    public void saveUser(User user) {
-        System.out.println(user.getBasket().size());
-        userRepository.save(user);
-    }
 }
