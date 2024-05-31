@@ -22,11 +22,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class EmailVerificationService {
-    public static final int SMS_REQUEST_LIMIT = 10;
+    public static final int SMS_REQUEST_LIMIT = 100;
     public static final int LIMIT_RELIEVE_TIME = 24; //unit: hour
     public static final int EXPIRED_TIME = 30; //unit: minute
     private final JWTService jwtService;
-
 
     private final VerificationRepository verificationRepository;
     private final UserRepository userRepository;
@@ -35,20 +34,20 @@ public class EmailVerificationService {
 
     @SneakyThrows
     @Transactional
-    public void requestSMS(String email, SMSRequestType smsType){
-        if(smsType != SMSRequestType.FORGOT_PASSWORD){
-            if (userRepository.findByEmail(email).isPresent()){
-                throw new IllegalAccessException(String.format("user not found with username %s", email));
-            }
-        }
+    public void requestSMS(String email, SMSRequestType smsType) {
+//        if (userRepository.findByEmail(email).isPresent()) {
+//
+//        }
 
         Verification verification = verificationRepository.findById(email)
                 .orElseGet(() -> new Verification(email, null));
-
-        if (verification.getCount() >= SMS_REQUEST_LIMIT){
+        System.out.println("===========");
+        System.out.println(verification);
+        System.out.println("===========");
+        if (verification.getCount() >= SMS_REQUEST_LIMIT) {
             var now = getTime();
             var nextRequestTime = verification.getCreationDate().plusHours(LIMIT_RELIEVE_TIME);
-            if(now.isBefore(nextRequestTime)){
+            if (now.isBefore(nextRequestTime)) {
                 throw new IllegalAccessException("sms request max");
             } else {
                 verification.setCount(0);
@@ -60,22 +59,24 @@ public class EmailVerificationService {
         verification.setCreationDate(getTime());
         verification.setValid(true);
         gmailSMSSender.smsSender(verification.getEmail(), verification.getCode());
-        verificationRepository.save(verification);
+        verificationRepository.saveAndFlush(verification);
     }
 
     @Transactional
-    public TokenResponseDTO isVerificationCodeValid(String email, String verificationCode){
+    public TokenResponseDTO isVerificationCodeValid(String email, String verificationCode) {
         Optional<Verification> optionalVerification = verificationRepository.findById(email);
-        if(optionalVerification.isEmpty()){
+        if (optionalVerification.isEmpty()) {
             System.out.println("isEmpty");
             return null;
         }
 
         Verification verification = optionalVerification.get();
 
-        if(verification.getCode().equals(verificationCode)) {
+        if (verification.getCode().equals(verificationCode)) {
             verification.setValid(false);
-            User user2 = new User(email);
+            User user2 = null;
+            Optional<User> byEmail = userRepository.findByEmail(email);
+            user2 = byEmail.orElseGet(() -> new User(email));
             userRepository.saveAndFlush(user2);
             User user = userRepository.findByEmail(email).get();
             var access = jwtService.generateToken(user);
@@ -91,10 +92,10 @@ public class EmailVerificationService {
     }
 
     @Transactional
-    public void invalidateVerificationCode(String email){
+    public void invalidateVerificationCode(String email) {
         Optional<Verification> optionalVerification = verificationRepository.findById(email);
 
-        if (optionalVerification.isEmpty()){
+        if (optionalVerification.isEmpty()) {
             return;
         }
 
@@ -103,13 +104,14 @@ public class EmailVerificationService {
         verificationRepository.save(verification);
     }
 
-    public LocalDateTime getTime(){
+    public LocalDateTime getTime() {
         return LocalDateTime.now(ZoneId.of("UTC"));
     }
-    private String generateVerificationCode(){
+
+    private String generateVerificationCode() {
         StringBuilder builder = new StringBuilder();
-        for(int i = 0; i< Verification.VERIFICATION_CODE_LENGTH; i++){
-            builder.append((int)(Math.random()*10));
+        for (int i = 0; i < Verification.VERIFICATION_CODE_LENGTH; i++) {
+            builder.append((int) (Math.random() * 10));
         }
         return builder.toString();
     }

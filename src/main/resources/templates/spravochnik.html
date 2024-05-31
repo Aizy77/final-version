@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Интернет-аптека в Алмате</title>
-<!--    <link rel="stylesheet" th:href="@{/style/normolize.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/style/main.css}">-->
-<!--    <link rel="stylesheet" th:href="@{/style/reset.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/style/normolize.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/style/main.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{/style/reset.css}">-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script th:src="@{/js/main.js}"></script>
@@ -169,7 +169,7 @@
 
         /*set padding to the container*/
         .container {
-            padding: 16px;
+            /*padding: 16px;*/
         }
 
         /*set the forgot password text*/
@@ -266,24 +266,49 @@
                 <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/}">
-                            <img th:src="@{/image/icon/logo.svg}" alt="">
+                            <img class="nav__list__item_img" th:src="@{/image/icon/LOGO.svg}" alt="logo">
                         </a>
                     </li>
+                </ul>
+                <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/info/payment}">Оплата</a>
                     </li>
                     <li class="nav__list__item">
                         <a th:href="@{/info/delivery}">Доставка</a>
                     </li>
-                    <li class="nav__list__item">
-                        <a th:href="@{/info/how-to-buy}">Как купить</a>
-                    </li>
+
                     <li class="nav__list__item">
                         <a th:href="@{/info/contacts}">Контакты</a>
                     </li>
                 </ul>
             </nav>
-            <p class="contacts">8 777 777 77 77</p>
+
+            <ul class = "nav__list">
+                <li>
+                    <div class="dropdown">
+                        <button class="catalog">+7 777 777 77 77</button>
+                        <div class="dropdown-content">
+                            <div class="contacts">
+                                <h4>Филиалы</h4>
+                                <ul class="contacts__list">
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
         </div>
     </div>
 
@@ -319,7 +344,7 @@
             </div>
             <li class="main__list__item"> <a href="/handbook">Справочник лекарств </a></li>
             <li class="main__list__item">
-                <input placeholder="Название товара" type="text" class="search__input">
+                <input onkeyup="onEnter(this)" placeholder="Название товара"  type="text" class="search__input">
             </li>
             <li class="main__list__item">
                 <div class="oneLine">
@@ -419,7 +444,7 @@
 
 
 
-<footer class="footer" style="position: absolute;">
+<footer class="footer">
     <div class="container">
         <ul class="footer__list">
             <li class="footer__list__item">
@@ -480,10 +505,10 @@
                         <h1>Мы в соцсетях</h1>
                     </li>
                     <li class="footer__list__item__list__item">
-                        <a href=""><img src="" alt="insta"></a>
-                        <a href=""><img src="" alt="vk"></a>
-                        <a href=""><img src="" alt="facebook"></a>
-                        <a href=""><img src="" alt="youtube"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/instagram.svg}" alt="insta"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/vk.svg}" alt="vk"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/facebook.svg}" alt="facebook"></a>
+                        <a href=""><img style="width: 20px; max-height: 20px;" th:src="@{/image/icon/youtube.svg}" alt="youtube"></a>
                     </li>
 
                 </ul>
@@ -518,36 +543,7 @@
 
                 </ul>
             </li>
-            <li class="footer__list__item">
-                <ul class="footer__list__item__list">
-                    <li class="footer__list__item__list__item">
-                        <h1>Интернет-магазин</h1>
-                    </li>
 
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Позвонить</p>
-                                <span>Ежедневно с 09:00 до 21:00</span>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Чат в WhatsApp</p>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </footer>

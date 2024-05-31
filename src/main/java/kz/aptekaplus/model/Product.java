@@ -2,10 +2,7 @@ package kz.aptekaplus.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Product {
 
 
@@ -26,10 +24,6 @@ public class Product {
 
     @Column(name = "name")
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name="label_id", nullable=false)
-    private Label label;
 
     @ManyToOne
     @JoinColumn(name="sub_category_id", nullable=false)

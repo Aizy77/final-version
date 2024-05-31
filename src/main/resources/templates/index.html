@@ -302,8 +302,8 @@
                     location.reload()
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while processing your request. Please try again later.');
+                    // console.error('Error:', error);
+                    // alert('An error occurred while processing your request. Please try again later.');
                 });
 
         }
@@ -458,7 +458,7 @@
 
         /*set padding to the container*/
         .container {
-            padding: 16px;
+            /*padding: 16px;*/
         }
 
         /*set the forgot password text*/
@@ -552,45 +552,76 @@
                 <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/}">
-                            <img th:src="@{/image/icon/logo.svg}" alt="">
+                            <img class="nav__list__item_img"  th:src="@{/image/icon/logoforwebsite.jpg}" alt="logo">
                         </a>
                     </li>
+                    <!--                    <li class="nav__list__logo_name">-->
+                    <!--                        <a th:href="@{/}">ЗДРАВStore</a>-->
+                    <!--                    </li>-->
+                </ul>
+                <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/info/payment}">Оплата</a>
                     </li>
                     <li class="nav__list__item">
                         <a th:href="@{/info/delivery}">Доставка</a>
                     </li>
-                    <li class="nav__list__item">
-                        <a th:href="@{/info/how-to-buy}">Как купить</a>
-                    </li>
+
                     <li class="nav__list__item">
                         <a th:href="@{/info/contacts}">Контакты</a>
                     </li>
                 </ul>
             </nav>
 
-            <div class="dropdown">
-                <button class="catalog">+7 777 777 77 77</button>
-                <div class="dropdown-content">
-                    <div class="contacts">
-                        <h4>Филиалы</h4>
-                        <ul class="contacts__list">
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
+            <ul class = "nav__list">
+                <li>
+                    <div class="dropdown">
+                        <button class="catalog">+7 777 777 77 77</button>
+                        <div class="dropdown-content">
+                            <div class="contacts">
+                                <h4>Филиалы</h4>
+                                <ul class="contacts__list">
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
 
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
-                        </ul>
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+                                </ul>
 
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
+                <li>
+                    <!--                    <a class="logout__click" id="logoutButton">Logout</a>-->
+                    <a class="logout__click" th:if="${user == null}" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">
+                        Login
+                    </a>
 
+                    <a class = "logout__click" th:if="${user != null}" id="logoutButton" style="width:auto;">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+
+            <script>
+                document.getElementById('logoutButton').addEventListener('click', function() {
+
+                    document.cookie.split(";").forEach(function(c) {
+                        document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+                    });
+
+                    localStorage.clear();
+
+                    sessionStorage.clear();
+
+                    window.location.href = '/';
+                });
+            </script>
 
         </div>
     </div>
@@ -613,10 +644,10 @@
                 </div>
             </li>
 
-            <div class="modal" id="temporaryModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" onmouseleave="closeModal()">
-                <div class="modal-dialog">
-                    <div class="modal-content"> <!-- Change modal-lg to adjust size -->
-                        <div class="modal-header">
+            <div style="z-index: 10;"  class="modal" id="temporaryModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" onmouseleave="closeModal()">
+                <div  class="modal-dialog">
+                    <div  class="modal-content"> <!-- Change modal-lg to adjust size -->
+                        <div  class="modal-header">
                             <h5 class="modal-title"></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -633,17 +664,17 @@
                 <a href="/handbook">Справочник лекарств</a>
             </li>
             <li class="main__list__item">
-                <input placeholder="Название товара" type="text" class="search__input">
+                <input onkeyup="onEnter(this)" placeholder="Название товара"  type="text" class="search__input">
             </li>
             <li class="main__list__item">
                 <!--/*@thymesVar id="user" type="kz.aptekaplus.model.User"*/-->
                 <div class="oneLine">
                     <img th:src="@{/image/icon/authIcon.svg}" alt="">
-                    <a th:href="@{/personal}" th:if="${user}">Личный кабинет</a>
-                    <button th:unless="${user}" onclick=
-                            "document.getElementById('id01').style.display='block'" style="width:auto;">
-                        Login
-                    </button>
+                    <a th:href="@{/personal}">Личный кабинет</a>
+                    <!--                    <button th:unless="${user}" onclick=-->
+                    <!--                            "document.getElementById('id01').style.display='block'" style="width:auto;">-->
+                    <!--                        Login-->
+                    <!--                    </button>-->
 
                 </div>
 
@@ -671,7 +702,7 @@
                             </div>
                             <div class="login__submit__form">
                                 <h4>Введите код</h4>
-                                <p>Мы выслали сообщение с проверочным кодом на email +7 (777) 018 18 30</p>
+                                <p>Мы выслали сообщение с проверочным кодом на ваш email</p>
                                 <h4>Код из СМС</h4>
                                 <input type="text" id="sms_code" name="sms_code" maxlength="4" pattern="\d{4}"
                                        title="Please enter a 4-digit code." required>
@@ -695,11 +726,40 @@
                     <a th:href="@{/basket}">Корзина</a>
                 </div>
             </li>
-    </ul>
+        </ul>
     </div>
     </div>
 
 </section>
+
+<br>
+<br>
+
+<section class="container">
+    <div class="container__gala" style="margin-left: 2.5%">
+        <div class="slider-wrapper__gala">
+            <div class="image-list__gala">
+                <div class="card-list__gala" th:each="product, iterStat : ${products}">
+                    <a th:href="@{'/products/' + ${product.id()}}" style="text-decoration: none; color: inherit;">
+                        <img class="image-item__gala" th:src="@{${'/image/product-' + iterStat.count + '.jpg'}}" alt="Product Image">
+                        <h3 th:text="${product.name()}"></h3>
+                        <h2 th:text="${product.price()}"></h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-scrollbar__gala">
+            <div class="scrollbar-track__gala">
+                <div class="scrollbar-thumb__gala"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<br>
+<br>
+
 
 
 <section class="services">
@@ -757,6 +817,24 @@
         </div>
     </div>
 </section>
+
+
+<section class="slider__azake">
+    <div class="slider__aza" style="margin-left: 5%">
+        <div class="slide-track__aza">
+            <div class="slide__aza" th:each="product, iterStat : ${products}">
+                <a th:href="@{'/products/' + ${product.id()}}" style="text-decoration: none; color: inherit;">
+                    <img th:src="@{${'/image/product-' + iterStat.count + '.jpg'}}" alt="Product Image">
+                    <h3 th:text="${product.name()}"></h3>
+                    <h2 th:text="${product.price()}"></h2>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
 
 
 <footer class="footer">
@@ -820,10 +898,10 @@
                         <h1>Мы в соцсетях</h1>
                     </li>
                     <li class="footer__list__item__list__item">
-                        <a href=""><img src="" alt="insta"></a>
-                        <a href=""><img src="" alt="vk"></a>
-                        <a href=""><img src="" alt="facebook"></a>
-                        <a href=""><img src="" alt="youtube"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/instagram.svg}" alt="insta"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/vk.svg}" alt="vk"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/facebook.svg}" alt="facebook"></a>
+                        <a href=""><img style="width: 20px; max-height: 20px;" th:src="@{/image/icon/youtube.svg}" alt="youtube"></a>
                     </li>
 
                 </ul>
@@ -858,36 +936,7 @@
 
                 </ul>
             </li>
-            <li class="footer__list__item">
-                <ul class="footer__list__item__list">
-                    <li class="footer__list__item__list__item">
-                        <h1>Интернет-магазин</h1>
-                    </li>
 
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Позвонить</p>
-                                <span>Ежедневно с 09:00 до 21:00</span>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Чат в WhatsApp</p>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </footer>

@@ -97,7 +97,7 @@
 
         /*set padding to the container*/
         .container {
-            padding: 16px;
+            /*margin-top: 16px;*/
         }
 
         /*set the forgot password text*/
@@ -204,44 +204,51 @@
                 <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/}">
-                            <img th:src="@{/image/icon/logo.svg}" alt="">
+                            <img class="nav__list__item_img" th:src="@{/image/icon/LOGO.svg}" alt="logo">
                         </a>
                     </li>
+                </ul>
+                <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/info/payment}">Оплата</a>
                     </li>
                     <li class="nav__list__item">
                         <a th:href="@{/info/delivery}">Доставка</a>
                     </li>
-                    <li class="nav__list__item">
-                        <a th:href="@{/info/how-to-buy}">Как купить</a>
-                    </li>
+
                     <li class="nav__list__item">
                         <a th:href="@{/info/contacts}">Контакты</a>
                     </li>
                 </ul>
             </nav>
 
-            <div class="dropdown">
-                <button class="catalog">+7 777 777 77 77</button>
-                <div class="dropdown-content">
-                    <div class="contacts">
-                        <h4>Филиалы</h4>
-                        <ul class="contacts__list">
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
+            <ul class = "nav__list">
+                <li>
+                    <div class="dropdown">
+                        <button class="catalog">+7 777 777 77 77</button>
+                        <div class="dropdown-content">
+                            <div class="contacts">
+                                <h4>Филиалы</h4>
+                                <ul class="contacts__list">
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
 
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
-                        </ul>
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+                                </ul>
 
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
+
+
+
 
 
         </div>
@@ -265,17 +272,17 @@
                 <a href="/handbook">Справочник лекарств</a>
             </li>
             <li class="main__list__item">
-                <input placeholder="Название товара" type="text" class="search__input">
+                <input onkeyup="onEnter(this)" placeholder="Название товара"  type="text" class="search__input">
             </li>
             <li class="main__list__item">
                 <!--/*@thymesVar id="user" type="kz.aptekaplus.model.User"*/-->
                 <div class="oneLine">
                     <img th:src="@{/image/icon/authIcon.svg}" alt="">
-                    <a th:href="@{/personal}" th:if="${user}">Личный кабинет</a>
-                    <button th:unless="${user}" onclick=
-                            "document.getElementById('id01').style.display='block'" style="width:auto;">
-                        Login
-                    </button>
+                    <a th:href="@{/personal}">Личный кабинет</a>
+                    <!--                    <button th:unless="${user}" onclick=-->
+                    <!--                            "document.getElementById('id01').style.display='block'" style="width:auto;">-->
+                    <!--                        Login-->
+                    <!--                    </button>-->
 
                 </div>
 
@@ -374,63 +381,103 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="footer__wrapper">
-            <ul class="footer__list">
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item"><b>Клиентам</b></li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item"><b>Клиентам</b></li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item"><b>Клиентам</b></li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item"><b>Клиентам</b></li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item">
-                            <b>Клиентам</b>
-                        </li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-                <li class="footer__list__item">
-                    <ul class="item__list">
-                        <li class="list__item"><b>Клиентам</b></li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                        <li class="list__item">Клиентам</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <ul class="footer__list">
+            <li class="footer__list__item">
+                <ul class="footer__list__item__list">
+                    <li class="footer__list__item__list__item">
+                        <h1>Клиентам</h1>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        Акции
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        Услуги
+                    </li>
 
+                    <li class="footer__list__item__list__item">
+                        Личный кабинет
+                    </li>
+                </ul>
+            </li>
+            <li class="footer__list__item">
+                <ul class="footer__list__item__list">
+                    <li class="footer__list__item__list__item">
+                        <h1>Информация</h1>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        Статьи
+                    </li>
+
+                    <li class="footer__list__item__list__item">
+                        О бонусах
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        Самовывоз
+                    </li>
+                </ul>
+            </li>
+            <li class="footer__list__item">
+                <ul class="footer__list__item__list">
+                    <li class="footer__list__item__list__item">
+                        <h1>Компания</h1>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        О нас
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        Контакты
+                    </li>
+
+
+                </ul>
+            </li>
+            <li class="footer__list__item">
+                <ul class="footer__list__item__list">
+                    <li class="footer__list__item__list__item">
+                        <h1>Мы в соцсетях</h1>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/instagram.svg}" alt="insta"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/vk.svg}" alt="vk"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/facebook.svg}" alt="facebook"></a>
+                        <a href=""><img style="width: 20px; max-height: 20px;" th:src="@{/image/icon/youtube.svg}" alt="youtube"></a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="footer__list__item">
+                <ul class="footer__list__item__list">
+                    <li class="footer__list__item__list__item">
+                        <h1>Филиалы</h1>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        <div class="filial">
+                            <div class="filial__left">
+                                <p>ул. Ауэзова 175</p>
+                                <span>Круглосуточно</span>
+                            </div>
+                            <div class="filial__right">
+                                <h1>+7 777 777 77 77</h1>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="footer__list__item__list__item">
+                        <div class="filial">
+                            <div class="filial__left">
+                                <p>ул. Ауэзова 175</p>
+                                <span>Круглосуточно</span>
+                            </div>
+                            <div class="filial__right">
+                                <h1>+7 777 777 77 77</h1>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </li>
+
+        </ul>
     </div>
-
 </footer>
 <script>
     function toggleContent() {

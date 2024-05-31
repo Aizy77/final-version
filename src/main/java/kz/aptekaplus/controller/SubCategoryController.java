@@ -1,15 +1,15 @@
 package kz.aptekaplus.controller;
 
-import kz.aptekaplus.model.Category;
-import kz.aptekaplus.repository.CategoryRepository;
-import kz.aptekaplus.repository.SubCategoryRepository;
+import jakarta.validation.constraints.Positive;
+import kz.aptekaplus.dto.subcategory.SubCategoryRequestDto;
+import kz.aptekaplus.dto.subcategory.SubCategoryResponseDto;
 import kz.aptekaplus.service.SubCategoryService;
+import kz.aptekaplus.service.impl.SubCategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -18,11 +18,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SubCategoryController {
 
-    private final SubCategoryService subCategoryService;
-
+    private final SubCategoryServiceImpl subCategoryServiceImpl;
     @GetMapping("/{id}")
     public ResponseEntity<?> getSubCategories(@PathVariable UUID id) {
         System.out.println("UUID " + id);
-        return ResponseEntity.ok(subCategoryService.findAllSubCategoryByCategoryId(id));
+        return ResponseEntity.ok(subCategoryServiceImpl.findAllSubCategoryByCategoryId(id));
     }
 }

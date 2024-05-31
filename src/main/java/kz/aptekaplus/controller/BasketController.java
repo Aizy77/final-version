@@ -3,7 +3,7 @@ package kz.aptekaplus.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kz.aptekaplus.service.BasketService;
-import kz.aptekaplus.service.CategoryService;
+import kz.aptekaplus.service.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class BasketController {
 
     private final BasketService basketService;
-    private final CategoryService categoryService;
+    private final CategoryServiceImpl categoryServiceImpl;
 
     @PostMapping
     @ResponseBody
@@ -28,7 +28,7 @@ public class BasketController {
 
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryServiceImpl.getCategories());
         return "basket";
     }
 

@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     @Query("SELECT p FROM Product p WHERE p.subCategory.id = :subCategoryId")
     List<Product> findBySubCategoryId(@Param("subCategoryId") UUID subCategoryId);
+
+    List<Product> findByNameContaining(String temp);
 }

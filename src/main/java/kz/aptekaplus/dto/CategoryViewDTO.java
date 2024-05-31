@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -15,8 +16,8 @@ public class CategoryViewDTO {
 
     private UUID id;
     private String name;
-    private List<SubCategory> subCategories;
-    public CategoryViewDTO(Category category, List<SubCategory> allSubCategoriesByCategory) {
+    private Set<SubCategory> subCategories;
+    public CategoryViewDTO(Category category, Set<SubCategory> allSubCategoriesByCategory) {
         this.id = category.getId();
         this.name = category.getName();
         this.subCategories = allSubCategoriesByCategory;

@@ -94,7 +94,7 @@
 
         /*set padding to the container*/
         .container {
-            padding: 16px;
+            /*padding: 16px;*/
         }
 
         /*set the forgot password text*/
@@ -191,24 +191,47 @@
                 <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/}">
-                            <img th:src="@{/image/icon/logo.svg}" alt="">
+                            <img class="nav__list__item_img" th:src="@{/image/icon/LOGO.svg}" alt="logo">
                         </a>
-                    </li>
+                </ul>
+                <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/info/payment}">Оплата</a>
                     </li>
                     <li class="nav__list__item">
                         <a th:href="@{/info/delivery}">Доставка</a>
                     </li>
-                    <li class="nav__list__item">
-                        <a th:href="@{/info/how-to-buy}">Как купить</a>
-                    </li>
+
                     <li class="nav__list__item">
                         <a th:href="@{/info/contacts}">Контакты</a>
                     </li>
                 </ul>
             </nav>
-            <p class="contacts">8 777 777 77 77</p>
+
+            <ul class = "nav__list">
+                <li>
+                    <div class="dropdown">
+                        <button class="catalog">+7 777 777 77 77</button>
+                        <div class="dropdown-content">
+                            <div class="contacts">
+                                <h4>Филиалы</h4>
+                                <ul class="contacts__list">
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -220,24 +243,47 @@
             <li class="main__list__item">
                 <div class="dropdown">
                     <button class="catalog">Каталог товаров</button>
-                    <div class="dropdown-content">
-                        <a th:each="category : ${categories}" class="dropdown-cover" href="#"
-                           th:text="${category.getName()}"/>
+                    <div class="dropdown-content" style="background-color: #fff">
+                        <!-- Ensure openModal is defined before being referenced -->
+                        <a th:each="category : ${categories}" class="dropdown-cover" href="#" id="content"
+                           th:id="'category_' + ${category.id}" th:text="${category.getName()}"
+                           th:attr="data-category-id=${category.id}"
+                           onmouseenter="openModal(this.getAttribute('data-category-id'))" />
                     </div>
                 </div>
             </li>
-            <li class="main__list__item"> <a href="/handbook">Справочник лекарств </a></li>
+
+            <div style="z-index: 10;"  class="modal" id="temporaryModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" onmouseleave="closeModal()">
+                <div  class="modal-dialog">
+                    <div  class="modal-content"> <!-- Change modal-lg to adjust size -->
+                        <div  class="modal-header">
+                            <h5 class="modal-title"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="modalBody">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <li class="main__list__item">
-                <input placeholder="Название товара" type="text" class="search__input">
+                <a href="/handbook">Справочник лекарств</a>
             </li>
             <li class="main__list__item">
+                <input onkeyup="onEnter(this)" placeholder="Название товара"  type="text" class="search__input">
+            </li>
+            <li class="main__list__item">
+                <!--/*@thymesVar id="user" type="kz.aptekaplus.model.User"*/-->
                 <div class="oneLine">
                     <img th:src="@{/image/icon/authIcon.svg}" alt="">
-                    <p th:if="${user}">Личный кабинет</p>
-                    <button th:unless="${user}" onclick=
-                            "document.getElementById('id01').style.display='block'" style="width:auto;">
-                        Login
-                    </button>
+                    <a th:href="@{/personal}">Личный кабинет</a>
+                    <!--                    <button th:unless="${user}" onclick=-->
+                    <!--                            "document.getElementById('id01').style.display='block'" style="width:auto;">-->
+                    <!--                        Login-->
+                    <!--                    </button>-->
 
                 </div>
 
@@ -256,18 +302,41 @@
                         </div>
 
                         <div class="container">
-                            <label><b>Email</b></label>
-                            <input id="emailInput" type="email" placeholder="Напишите почту"
-                                   name="email" required>
-                            <button onclick="sendSms()" type="submit">Login</button>
-                            <p>Мы вышлем проверочный код на этот email</p>
+                            <div class="login__form">
+                                <label><b>Email</b></label>
+                                <input id="emailInput" type="email" placeholder="Напишите почту"
+                                       name="email" required>
+                                <button onclick="sendSms()" type="submit">Login</button>
+                                <p>Мы вышлем проверочный код на этот email</p>
+                            </div>
+                            <div class="login__submit__form">
+                                <h4>Введите код</h4>
+                                <p>Мы выслали сообщение с проверочным кодом на email +7 (777) 018 18 30</p>
+                                <h4>Код из СМС</h4>
+                                <input type="text" id="sms_code" name="sms_code" maxlength="4" pattern="\d{4}"
+                                       title="Please enter a 4-digit code." required>
+
+                                <button onclick="submit()" type="submit">Войти</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </li>
-            <li class="main__list__item"> <a href="/personal/favourites">Избранное</a></li>
-            <li class="main__list__item"><a href="/basket">Корзина </a></li>
+            <li class="main__list__item">
+                <div class="oneLine">
+                    <img th:src="@{/image/icon/heard.svg}" alt="">
+                    <a th:href="@{/personal/favourites}">Избранное</a>
+                </div>
+            </li>
+            <li class="main__list__item">
+                <div class="oneLine">
+                    <img th:src="@{/image/icon/Vector.svg}" alt="aaa">
+                    <span th:if="${user}" th:text="${user.getBasket().size()}"></span>
+                    <a th:href="@{/basket}">Корзина</a>
+                </div>
+            </li>
         </ul>
+    </div>
     </div>
 
 </section>
@@ -297,7 +366,7 @@
 
 
 
-<footer class="footer" style="position: absolute; z-index: 1; bottom: 0">
+<footer class="footer">
     <div class="container">
         <ul class="footer__list">
             <li class="footer__list__item">
@@ -325,9 +394,7 @@
                     <li class="footer__list__item__list__item">
                         Статьи
                     </li>
-                    <li class="footer__list__item__list__item">
-                        Как купить
-                    </li>
+
 
                     <li class="footer__list__item__list__item">
                         О бонусах
@@ -358,10 +425,10 @@
                         <h1>Мы в соцсетях</h1>
                     </li>
                     <li class="footer__list__item__list__item">
-                        <a href=""><img src="" alt="insta"></a>
-                        <a href=""><img src="" alt="vk"></a>
-                        <a href=""><img src="" alt="facebook"></a>
-                        <a href=""><img src="" alt="youtube"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/instagram.svg}" alt="insta"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/vk.svg}" alt="vk"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/facebook.svg}" alt="facebook"></a>
+                        <a href=""><img style="width: 20px; max-height: 20px;" th:src="@{/image/icon/youtube.svg}" alt="youtube"></a>
                     </li>
 
                 </ul>
@@ -396,36 +463,7 @@
 
                 </ul>
             </li>
-            <li class="footer__list__item">
-                <ul class="footer__list__item__list">
-                    <li class="footer__list__item__list__item">
-                        <h1>Интернет-магазин</h1>
-                    </li>
 
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Позвонить</p>
-                                <span>Ежедневно с 09:00 до 21:00</span>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Чат в WhatsApp</p>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </footer>

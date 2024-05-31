@@ -82,25 +82,25 @@
         }
 
         function deleteFromBasket(productId) {
-        let userId = document.getElementById('userId')
+            let userId = document.getElementById('userId')
 
 
-        const http = new XMLHttpRequest();
-        http.open("DELETE", "/basket/" + userId.value + "/" + productId, true);
+            const http = new XMLHttpRequest();
+            http.open("DELETE", "/basket/" + userId.value + "/" + productId, true);
 
-        http.onreadystatechange = function () {
-            if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
-                console.log("successfully deleted")
-                alert("successfully deleted")
-                location.reload();
+            http.onreadystatechange = function () {
+                if (http.readyState === XMLHttpRequest.DONE && http.status === 200) {
+                    console.log("successfully deleted")
+                    alert("successfully deleted")
+                    location.reload();
 
-            }
-        };
-        http.send();
+                }
+            };
+            http.send();
 
-    }
+        }
 
-    var modal = document.getElementById('id01');
+        var modal = document.getElementById('id01');
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
@@ -185,9 +185,9 @@
         }
 
         /*set padding to the container*/
-        .container {
-            padding: 16px;
-        }
+        /*.container {*/
+        /*    padding: 16px;*/
+        /*}*/
 
         /*set the forgot password text*/
         span.psw {
@@ -280,44 +280,51 @@
                 <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/}">
-                            <img th:src="@{/image/icon/logo.svg}" alt="">
+                            <img class="nav__list__item_img" th:src="@{/image/icon/LOGO.svg}" alt="logo">
                         </a>
                     </li>
+                </ul>
+                <ul class="nav__list">
                     <li class="nav__list__item">
                         <a th:href="@{/info/payment}">Оплата</a>
                     </li>
                     <li class="nav__list__item">
                         <a th:href="@{/info/delivery}">Доставка</a>
                     </li>
-                    <li class="nav__list__item">
-                        <a th:href="@{/info/how-to-buy}">Как купить</a>
-                    </li>
+
                     <li class="nav__list__item">
                         <a th:href="@{/info/contacts}">Контакты</a>
                     </li>
                 </ul>
             </nav>
 
-            <div class="dropdown">
-                <button class="catalog">+7 777 777 77 77</button>
-                <div class="dropdown-content">
-                    <div class="contacts">
-                        <h4>Филиалы</h4>
-                        <ul class="contacts__list">
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
+            <ul class = "nav__list">
+                <li>
+                    <div class="dropdown">
+                        <button class="catalog">+7 777 777 77 77</button>
+                        <div class="dropdown-content">
+                            <div class="contacts">
+                                <h4>Филиалы</h4>
+                                <ul class="contacts__list">
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
 
-                            <li class="contacts__item">
-                                <p>Ауезова 175</p>
-                                <input type="tel" value="+7 777 777 77 77">
-                            </li>
-                        </ul>
+                                    <li class="contacts__item">
+                                        <p>Ауезова 175</p>
+                                        <input type="tel" value="+7 777 777 77 77">
+                                    </li>
+                                </ul>
 
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
+
+
+
 
 
         </div>
@@ -356,17 +363,17 @@
                 <a href="/handbook">Справочник лекарств</a>
             </li>
             <li class="main__list__item">
-                <input placeholder="Название товара" type="text" class="search__input">
+                <input onkeyup="onEnter(this)" placeholder="Название товара"  type="text" class="search__input">
             </li>
             <li class="main__list__item">
                 <!--/*@thymesVar id="user" type="kz.aptekaplus.model.User"*/-->
                 <div class="oneLine">
                     <img th:src="@{/image/icon/authIcon.svg}" alt="">
-                    <a th:href="@{/personal}" th:if="${user}">Личный кабинет</a>
-                    <button th:unless="${user}" onclick=
-                            "document.getElementById('id01').style.display='block'" style="width:auto;">
-                        Login
-                    </button>
+                    <a th:href="@{/personal}">Личный кабинет</a>
+                    <!--                    <button th:unless="${user}" onclick=-->
+                    <!--                            "document.getElementById('id01').style.display='block'" style="width:auto;">-->
+                    <!--                        Login-->
+                    <!--                    </button>-->
 
                 </div>
 
@@ -415,7 +422,7 @@
             </li>
 
 
-    </ul>
+        </ul>
     </div>
     </div>
 
@@ -430,7 +437,7 @@
             <li class="basket__item" th:each="product : ${user.getBasket()}">
                 <ul class="basket__item__row">
                     <li class="basket__item__row__item">
-                        <img class="basket__item__image" th:src="${product.getImagePath()}" alt="Product Image">
+                        <img class="basket__item__image" width="50px" th:src="@{/image/1_1_7.jpg}" alt="Product Image">
                     </li>
                     <li class="basket__item__row__item">
                         <span class="basket__item__name" th:text="${product.getName()}"></span>
@@ -451,7 +458,7 @@
 </section>
 
 
-<footer class="footer" style="position: absolute; z-index: 1; bottom: 0">
+<footer class="footer">
     <div class="container">
         <ul class="footer__list">
             <li class="footer__list__item">
@@ -478,9 +485,6 @@
                     </li>
                     <li class="footer__list__item__list__item">
                         Статьи
-                    </li>
-                    <li class="footer__list__item__list__item">
-                        Как купить
                     </li>
 
                     <li class="footer__list__item__list__item">
@@ -512,10 +516,10 @@
                         <h1>Мы в соцсетях</h1>
                     </li>
                     <li class="footer__list__item__list__item">
-                        <a href=""><img src="" alt="insta"></a>
-                        <a href=""><img src="" alt="vk"></a>
-                        <a href=""><img src="" alt="facebook"></a>
-                        <a href=""><img src="" alt="youtube"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/instagram.svg}" alt="insta"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/vk.svg}" alt="vk"></a>
+                        <a href=""><img style="width: 20px" th:src="@{/image/icon/facebook.svg}" alt="facebook"></a>
+                        <a href=""><img style="width: 20px; max-height: 20px;" th:src="@{/image/icon/youtube.svg}" alt="youtube"></a>
                     </li>
 
                 </ul>
@@ -550,36 +554,7 @@
 
                 </ul>
             </li>
-            <li class="footer__list__item">
-                <ul class="footer__list__item__list">
-                    <li class="footer__list__item__list__item">
-                        <h1>Интернет-магазин</h1>
-                    </li>
 
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Позвонить</p>
-                                <span>Ежедневно с 09:00 до 21:00</span>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="footer__list__item__list__item">
-                        <div class="filial">
-                            <div class="filial__left">
-                                <p>Чат в WhatsApp</p>
-                            </div>
-                            <div class="filial__right">
-                                <h1>+7 777 777 77 77</h1>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </li>
         </ul>
     </div>
 </footer>

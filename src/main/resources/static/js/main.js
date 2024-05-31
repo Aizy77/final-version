@@ -1,5 +1,3 @@
-import {Alert} from "./bootstrap.esm";
-
 (function () {
     //Login/Signup modal window - by CodyHouse.co
     function ModalSignin(element) {
@@ -140,6 +138,13 @@ import {Alert} from "./bootstrap.esm";
     };
 })();
 
+function onEnter(element) {
+    setTimeout(function () {
+        let email = element.value;
+        console.log(email)
+        location.assign(`http://localhost:8080/products/search?search=${email}`)
+    }, 1500)
+}
 
 function sendSms() {
     let smsSubmit = document.querySelector(".login__submit__form")
@@ -210,7 +215,7 @@ function submit() {
             console.log('================')
             console.log(data.refreshToken)
             console.log(data.accessToken)
-            document.cookie = "refreshToken="+data.refreshToken
+            document.cookie = "refreshToken=" + data.refreshToken
             console.log('================')
             sessionStorage.setItem("refresh-token", data.refreshToken)
             sessionStorage.setItem("access-token", data.accessToken)
@@ -275,15 +280,9 @@ function getSubCategories(id) {
             }
 
 
-
-
-
             modalBody.innerHTML = body;
         }
     };
-
-
-
 
 
     http.send();
@@ -297,5 +296,78 @@ function openCategories(id) {
 function addToFavorite(productId) {
 
 
-
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.querySelector(".image-list__gala");
+    const scrollbarThumb = document.querySelector(".scrollbar-thumb__gala");
+    const scrollbarTrack = document.querySelector(".scrollbar-track__gala");
+
+    const handleDrag = (e) => {
+        const sliderRect = slider.getBoundingClientRect();
+        const thumbRect = scrollbarThumb.getBoundingClientRect();
+
+        let newLeft = e.clientX - sliderRect.left - thumbRect.width / 2;
+
+        if (newLeft < 0) {
+            newLeft = 0;
+        } else if (newLeft + thumbRect.width > sliderRect.width) {
+            newLeft = sliderRect.width - thumbRect.width;
+        }
+
+        scrollbarThumb.style.left = newLeft + "px";
+
+        const scrollPercent = newLeft / (sliderRect.width - thumbRect.width);
+        slider.scrollLeft = scrollPercent * (slider.scrollWidth - sliderRect.width);
+    };
+
+    const handleScroll = () => {
+        const sliderRect = slider.getBoundingClientRect();
+        const thumbRect = scrollbarThumb.getBoundingClientRect();
+        const scrollPercent =
+            slider.scrollLeft / (slider.scrollWidth - sliderRect.width);
+
+        scrollbarThumb.style.left =
+            scrollPercent * (sliderRect.width - thumbRect.width) + "px";
+    };
+
+    scrollbarThumb.addEventListener("mousedown", () => {
+        document.addEventListener("mousemove", handleDrag);
+    });
+
+    document.addEventListener("mouseup", () => {
+        document.removeEventListener("mousemove", handleDrag);
+    });
+
+    scrollbarThumb.addEventListener("touchstart", () => {
+        document.addEventListener("touchmove", handleDrag);
+    });
+
+    document.addEventListener("touchend", () => {
+        document.removeEventListener("touchmove", handleDrag);
+    });
+
+    slider.addEventListener("scroll", handleScroll);
+});
+
+
+// script.js
+document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.querySelector(".slide-track__aza");
+    const slides = Array.from(document.querySelectorAll(".slide__aza"));
+    const slideWidth = slides[0].offsetWidth;
+    let clones = slides.length;
+
+    // Clone slides to create the infinite effect
+    slides.forEach((slide) => {
+        const clone = slide.cloneNode(true);
+        slider.appendChild(clone);
+    });
+
+    // Ensure smooth scrolling by resetting the animation
+    slider.addEventListener("animationiteration", () => {
+        slider.style.animation = "none";
+        slider.offsetHeight; // Trigger reflow
+        slider.style.animation = null;
+    });
+});

@@ -1,6 +1,19 @@
 version: '3.9'
 
 services:
+  minio:
+    container_name: minio-container
+    image: minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9090:9090"
+      - "9000:9000"
+    restart: always
+    command: server -console-address :9090 /data
   db-aptekaplus:
     image: postgres:15-alpine
     restart: always
@@ -16,7 +29,20 @@ services:
     command: -p 5432
     volumes:
       - data-aptekaplus:/var/lib/postgresql/data
+  app:
+    build: .
+    container_name: app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-aptekaplus:5432/aptekaplus
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
 
 
 volumes:
   data-aptekaplus:
+  minio-data:

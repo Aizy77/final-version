@@ -3,10 +3,10 @@ package kz.aptekaplus.service;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import kz.aptekaplus.dto.ProductViewDTO;
 import kz.aptekaplus.model.Product;
 import kz.aptekaplus.model.User;
 import kz.aptekaplus.repository.UserRepository;
+import kz.aptekaplus.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class BasketService {
 
     private final UserService userService;
     private final JWTService jwtService;
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
     private final UserRepository userRepository;
     @Transactional
     public void addBasket(HttpServletRequest request, UUID productId) {
@@ -38,7 +38,7 @@ public class BasketService {
                 UUID userId = UUID.fromString(jwtService.extractID(refreshToken));
                 User user = userService.findById(userId);
                 if (user != null) {
-                    Product product = productService.findProduct(productId);
+                    Product product = productServiceImpl.findProduct(productId);
                     System.out.println("```````````````");
                     System.out.println(user);
                     System.out.println(product);
@@ -53,7 +53,7 @@ public class BasketService {
 
     public void deleteFromBasket(UUID productId, UUID userId) {
         User user = userService.findById(userId);
-        Product product = productService.findProduct(productId);
+        Product product = productServiceImpl.findProduct(productId);
 
         if (Objects.isNull(user) || Objects.isNull(product)) return;
 

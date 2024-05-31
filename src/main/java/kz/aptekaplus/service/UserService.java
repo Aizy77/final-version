@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kz.aptekaplus.model.Product;
 import kz.aptekaplus.model.User;
 import kz.aptekaplus.repository.UserRepository;
+import kz.aptekaplus.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final JWTService jwtService;
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
     public User findById(UUID id) {
         return userRepository.findById(id)
                 .orElse(null);
@@ -87,7 +88,7 @@ public class UserService {
                     if (!favouriteProducts.isEmpty())
                     for (String id : favouriteProducts) {
                         try {
-                            favourites.add(productService.findProduct(UUID.fromString(id)));
+                            favourites.add(productServiceImpl.findProduct(UUID.fromString(id)));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
